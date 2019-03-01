@@ -472,7 +472,10 @@ func (r Request) finalURLTemplate() url.URL {
 		// only add baseURL path length if it is different than `/`
 		// as strings.Split("/", "/") returns length of 2
 		if r.baseURL.Path != "/" {
-			groupIndex += len(strings.Split(r.baseURL.Path, "/"))
+			// We need to perform a `path.Join` as path.Join appends `/` to a
+			// path that does not contain `/` and removes duplicate `/` if they
+			// exist.
+			groupIndex += len(strings.Split(path.Join("/", r.baseURL.Path), "/"))
 		} else {
 			groupIndex += 1
 		}
@@ -523,7 +526,7 @@ func (r Request) finalURLTemplate() url.URL {
 			segments[index+3] = "{name}"
 		}
 	}
-	url.Path = path.Join(segments...)
+	url.Path = strings.Join(segments, "/")
 	return *url
 }
 
