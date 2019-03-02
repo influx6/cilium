@@ -54,18 +54,10 @@ int main() {
     trace_printk("%p", 1, &s11);
     struct metrics_value s12 = {};
     trace_printk("%p", 1, &s12);
-    struct proxy4_tbl_key s13 = {};
+    struct sock_key s13 = {};
     trace_printk("%p", 1, &s13);
-    struct proxy4_tbl_value s14 = {};
+    struct ep_config s14 = {};
     trace_printk("%p", 1, &s14);
-    struct proxy6_tbl_key s15 = {};
-    trace_printk("%p", 1, &s15);
-    struct proxy6_tbl_value s16 = {};
-    trace_printk("%p", 1, &s16);
-    struct sock_key s17 = {};
-    trace_printk("%p", 1, &s17);
-    struct ep_config s18 = {};
-    trace_printk("%p", 1, &s18);
 
     return 0;
 }
