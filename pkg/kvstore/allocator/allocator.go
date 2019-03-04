@@ -28,6 +28,7 @@ import (
 	"github.com/cilium/cilium/pkg/lock"
 	"github.com/cilium/cilium/pkg/logging"
 	"github.com/cilium/cilium/pkg/logging/logfields"
+	"github.com/cilium/cilium/pkg/option"
 	"github.com/cilium/cilium/pkg/uuid"
 
 	"github.com/sirupsen/logrus"
@@ -49,10 +50,6 @@ const (
 	// gcInterval is the interval in which allocator identities are
 	// attempted to be expired from the kvstore
 	gcInterval = time.Duration(10) * time.Minute
-
-	// localKeySyncInterval is the interval in which local keys are being
-	// synced to the kvstore in case master keys get lost
-	localKeySyncInterval = 1 * time.Minute
 )
 
 // Allocator is a distributed ID allocator backed by a KVstore. It maps
@@ -748,7 +745,7 @@ func (a *Allocator) startGC() {
 				log.WithFields(logrus.Fields{fieldPrefix: a.idPrefix}).
 					Debug("Stopped master key sync routine")
 				return
-			case <-time.After(localKeySyncInterval):
+			case <-time.After(option.Config.KVstorePeriodicSync):
 			}
 		}
 	}(a)
